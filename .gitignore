@@ -1,45 +1,144 @@
-# Miscellaneous
+# ============================================================
+# FLUTTER / DART
+# ============================================================
+
+.dart_tool/
+.pub/
+.pub-cache/
+build/
+coverage/
+
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Fichiers temporaires Dart / Flutter
 *.class
 *.log
 *.pyc
 *.swp
+*.tmp
+
+# Symbolication / obfuscation
+app.*.symbols
+app.*.map.json
+
+
+# ============================================================
+# ANDROID / GRADLE
+# ============================================================
+
+.gradle/
+**/.gradle/
+android/.gradle/
+android/build/
+android/app/build/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# Rapports générés par Gradle
+**/build/reports/
+
+# Keystores / signatures
+*.jks
+*.keystore
+key.properties
+
+
+# ============================================================
+# IOS
+# ============================================================
+
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/ephemeral/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Runner/GeneratedPluginRegistrant.m
+ios/build/
+
+
+# ============================================================
+# MACOS
+# ============================================================
+
+macos/Pods/
+macos/.symlinks/
+macos/Flutter/ephemeral/
+macos/Flutter/Generated.xcconfig
+macos/Flutter/flutter_export_environment.sh
+macos/build/
+
+
+# ============================================================
+# LINUX
+# ============================================================
+
+linux/build/
+
+
+# ============================================================
+# WINDOWS
+# ============================================================
+
+windows/build/
+
+
+# ============================================================
+# IDE
+# ============================================================
+
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+
+
+# ============================================================
+# SYSTEME
+# ============================================================
+
 .DS_Store
+Thumbs.db
 .atom/
-.build/
-.buildlog/
 .history
 .svn/
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# ============================================================
+# SECRETS / VARIABLES D'ENVIRONNEMENT
+# ============================================================
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-/coverage/
+.env
+.env.*
+!.env.example
 
-# Symbolication related
-app.*.symbols
+# Fichiers de configuration contenant potentiellement des secrets
+firebase_options.local.dart
 
-# Obfuscation related
-app.*.map.json
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# ============================================================
+# FIREBASE / GOOGLE
+# ============================================================
+
+# À ignorer UNIQUEMENT si ces fichiers contiennent des informations
+# sensibles propres à l'environnement.
+# google-services.json
+# GoogleService-Info.plist
+
+
+# ============================================================
+# FICHIERS LOCAUX
+# ============================================================
+
+*.local
+*.local.*
