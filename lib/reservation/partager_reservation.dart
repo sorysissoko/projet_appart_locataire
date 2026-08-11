@@ -153,15 +153,25 @@ $lienAppartement
         final file = File('${tempDir.path}/appartement.jpg');
         await file.writeAsBytes(response.bodyBytes);
 
-        await Share.shareXFiles(
-          [XFile(file.path)],
-          text: message,
+        await SharePlus.instance.share(
+          ShareParams(
+            files: [XFile(file.path)],
+            text: message,
+          ),
         );
       } catch (e) {
-        await Share.share(message);
+        await SharePlus.instance.share(
+          ShareParams(
+            text: message,
+          ),
+        );
       }
     } else {
-      await Share.share(message);
+      await SharePlus.instance.share(
+        ShareParams(
+          text: message,
+        ),
+      );
     }
   }
 

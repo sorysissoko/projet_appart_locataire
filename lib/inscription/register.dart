@@ -758,14 +758,6 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
           ),
-          const SizedBox(height: 4),
-          Text(
-            '8 caractères minimum',
-            style: TextStyle(
-              fontSize: 10,
-              color: const Color(0xFF8A4E1E).withValues(alpha: 0.6),
-            ),
-          ),
         ],
       ),
     );

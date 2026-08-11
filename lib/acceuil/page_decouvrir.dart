@@ -53,6 +53,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ),
   ];
 
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -80,7 +81,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final slide = slides[current];
-    final IconData icon = slide.icon;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFEFE0),
@@ -147,55 +147,72 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     });
                   },
                   children: slides.map((s) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 280,
-                          height: 280,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFEFE6).withValues(alpha: 0.3),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(24),
-                            child: Image.asset(
-                              s.imageAsset,
-                              fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(
-                                  s.icon,
-                                  size: 80,
-                                  color: const Color(0xFFE85D26).withValues(alpha: 0.5),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFDDBC7),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(icon, size: 16, color: const Color(0xFFE85D26)),
-                              const SizedBox(width: 8),
-                              Text(
-                                s.subtitle,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFFE85D26),
+                    return LayoutBuilder(
+                      builder: (context, constraints) {
+                        final imageSize =
+                        (constraints.maxHeight * 0.65).clamp(160.0, 280.0);
+
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: imageSize,
+                              height: imageSize,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFEFE6).withValues(alpha: 0.3),
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(24),
+                                child: Image.asset(
+                                  s.imageAsset,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Icon(
+                                      s.icon,
+                                      size: 80,
+                                      color: const Color(0xFFE85D26)
+                                          .withValues(alpha: 0.5),
+                                    );
+                                  },
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
+                            ),
+
+                            const SizedBox(height: 24),
+
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFDDBC7),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    s.icon,
+                                    size: 16,
+                                    color: const Color(0xFFE85D26),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    s.subtitle,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFFE85D26),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     );
                   }).toList(),
                 ),

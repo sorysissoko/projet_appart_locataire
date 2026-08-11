@@ -1088,8 +1088,9 @@ class _AppartementDetailPageState extends State<AppartementDetailPage> {
             onPressed: () async {
               final titre = widget.appartement['titre'] ?? 'Appartement';
               final description = widget.appartement['description'] ?? '';
-              final photos = List<String>.from(_cachedData[_cacheKeyPhotos] ?? []);
+              final photos = List.from(_cachedData[_cacheKeyPhotos] ?? []);
               final imageUrl = photos.isNotEmpty ? photos.first : '';
+
               try {
                 if (imageUrl.isNotEmpty) {
                   final response = await http.get(Uri.parse(imageUrl));
@@ -1097,19 +1098,27 @@ class _AppartementDetailPageState extends State<AppartementDetailPage> {
                   final tempDir = await getTemporaryDirectory();
                   final file = File('${tempDir.path}/appartement.jpg');
                   await file.writeAsBytes(bytes);
+
                   final textToShare =
-                      "$titre\n${description.length > 100 ? description.substring(0, 100) + '...' : description}";
-                  await Share.shareXFiles(
-                    [XFile(file.path)],
-                    text: textToShare,
-                    subject: titre,
+                      "$titre\n${description.length > 100 ? '${description.substring(0, 100)}...' : description}";
+
+                  await SharePlus.instance.share(
+                    ShareParams(
+                      files: [XFile(file.path)],
+                      text: textToShare,
+                      subject: titre,
+                    ),
                   );
                 } else {
-                  Share.share(
-                      "$titre\n${description.length > 100 ? description.substring(0, 100) + '...' : description}");
+                  await SharePlus.instance.share(
+                    ShareParams(
+                      text:
+                      "$titre\n${description.length > 100 ? '${description.substring(0, 100)}...' : description}",
+                    ),
+                  );
                 }
               } catch (e) {
-                throw ('Erreur partage: $e');
+                debugPrint('Erreur partage: $e');
               }
             },
           ),

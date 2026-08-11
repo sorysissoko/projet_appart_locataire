@@ -807,10 +807,13 @@ ${reservation['status'] ?? 'Confirmé'}
           '${tempDir.path}/reservation_${reservation['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch}.txt');
       await file.writeAsString(receiptContent);
 
-      await Share.shareXFiles(
-        [XFile(file.path)],
-        text: 'Voici votre récapitulatif de réservation pour ${widget.appartement['titre']}',
-        subject: 'Réservation - ${widget.appartement['titre']}',
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path)],
+          text:
+          'Voici votre récapitulatif de réservation pour ${widget.appartement['titre']}',
+          subject: 'Réservation - ${widget.appartement['titre']}',
+        ),
       );
 
       if (!mounted) return;
@@ -1252,9 +1255,20 @@ ${reservation['status'] ?? 'Confirmé'}
                   await file.writeAsBytes(bytes);
 
                   final textToShare = "$titre\n${description.length > 100 ? '${description.substring(0, 100)}...' : description}";
-                  await Share.shareXFiles([XFile(file.path)], text: textToShare, subject: titre);
+                  await SharePlus.instance.share(
+                    ShareParams(
+                      files: [XFile(file.path)],
+                      text: textToShare,
+                      subject: titre,
+                    ),
+                  );
                 } else {
-                  Share.share("$titre\n${description.length > 100 ? '${description.substring(0, 100)}...' : description}");
+                  await SharePlus.instance.share(
+                    ShareParams(
+                      text:
+                      "$titre\n${description.length > 100 ? '${description.substring(0, 100)}...' : description}",
+                    ),
+                  );
                 }
               } catch (e) {
                 debugPrint('Erreur partage: $e');
