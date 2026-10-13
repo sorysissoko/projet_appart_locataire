@@ -1,5 +1,6 @@
 // lib/widgets/rating_modal.dart
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StarRating extends StatelessWidget {
   final double rating;
@@ -43,7 +44,7 @@ class StarRating extends StatelessWidget {
           SizedBox(width: 4),
           Text(
             rating.toStringAsFixed(1),
-            style: TextStyle(
+            style: GoogleFonts.poppins(
               fontSize: size,
               fontWeight: FontWeight.w600,
             ),

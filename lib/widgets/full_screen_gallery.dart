@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FullScreenGallery extends StatefulWidget {
   final List<String> photos;
@@ -79,7 +80,7 @@ class _FullScreenGalleryState extends State<FullScreenGallery> {
                 ),
                 child: Text(
                   '${_currentIndex + 1} / ${widget.photos.length}',
-                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

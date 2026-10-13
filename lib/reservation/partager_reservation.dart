@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:service/database_service.dart';
 import 'package:share_plus/share_plus.dart';
@@ -474,7 +475,7 @@ $lienAppartement
                           ),
                           child: Text(
                             '${_currentIndex + 1} / ${images.length}',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 12.sp,
                             ),
@@ -524,7 +525,7 @@ $lienAppartement
                       SizedBox(height: 8.h),
                       Text(
                         _imageError!,
-                        style: const TextStyle(color: Colors.red),
+                        style: GoogleFonts.poppins(color: Colors.red),
                       ),
                     ],
                   ),
@@ -550,7 +551,7 @@ $lienAppartement
                 Expanded(
                   child: Text(
                     appartement['titre'] ?? 'Appartement',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                     ),
@@ -579,7 +580,7 @@ $lienAppartement
                     child: Text(
                       '${appartement['adresse'] ?? ''}${appartement['ville'] !=
                           null ? ', ${appartement['ville']}' : ''}',
-                      style: TextStyle(fontSize: 16.sp),
+                      style: GoogleFonts.poppins(fontSize: 16.sp),
                     ),
                   ),
                 ],
@@ -701,7 +702,7 @@ $lienAppartement
                             flex: 2,
                             child: Text(
                               'Adulte | Enfant',
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 14.sp,
                                 color: Colors.grey[600],
                               ),
@@ -713,7 +714,7 @@ $lienAppartement
                             child: Text(
                               '${widget.reservation['adulte'] ?? 0} | ${widget.reservation['enfant'] ?? 0}',
                               textAlign: TextAlign.right,
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -744,7 +745,7 @@ $lienAppartement
                     children: [
                       Text(
                         "Autres informations",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
@@ -798,7 +799,7 @@ $lienAppartement
             flex: 2,
             child: Text(
               label,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 14.sp,
                 color: Colors.grey[600],
               ),
@@ -808,7 +809,7 @@ $lienAppartement
             flex: 3,
             child: Text(
               value,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
               ),
@@ -847,9 +848,9 @@ $lienAppartement
                 // PARTAGER
                 ListTile(
                   leading: const Icon(Icons.share, size: 26),
-                  title: const Text(
+                  title: Text(
                     "Partager la réservation",
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                   ),
                   onTap: () {
                     Navigator.pop(context);
@@ -860,9 +861,9 @@ $lienAppartement
                 // IMPRIMER
                 ListTile(
                   leading: const Icon(Icons.print, size: 26),
-                  title: const Text(
+                  title: Text(
                     "Imprimer la réservation",
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                   ),
                   onTap: () {
                     Navigator.pop(context);

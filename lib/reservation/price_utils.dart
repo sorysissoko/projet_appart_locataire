@@ -1,4 +1,3 @@
-// lib/utils/price_utils.dart
 import 'package:intl/intl.dart';
 
 String formatPrice(num price) {

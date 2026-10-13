@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile_app/reservation/reservation_detail/reservation_detail_screen.dart';
 import 'package:service/rating/rating_widget.dart';
 import 'package:service/database_service.dart';
 import 'package:service/snackbar_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../widgets/confirmation_modal.dart';
-import 'detail_reservation.dart';
 
 String formatPrice(num price) {
   final formatter = NumberFormat("#,###", "fr_FR");
@@ -249,21 +250,37 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
     );
   }
 
-  Future<void> _handleCancelReservation(Map<String, dynamic> reservation) async {
+  Future<void> _handleCancelReservation(
+      Map<String, dynamic> reservation,
+      ) async {
     setState(() => _isLoading = true);
 
     try {
-      await _databaseService.updateReservationStatus(
-          reservation['id'].toString(),
-          'annulee'
+      final reservationId =
+      reservation['id'].toString();
+
+      // =====================================================
+      // ANNULATION SÉCURISÉE VIA RPC
+      // =====================================================
+
+      await _databaseService.cancelReservation(
+        reservationId,
       );
+
+      // =====================================================
+      // RECHARGER LES RÉSERVATIONS
+      // =====================================================
 
       await _loadReservations();
 
       if (mounted) {
+        setState(() => _isLoading = false);
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Réservation annulée avec succès !'),
+            content: Text(
+              'Réservation annulée avec succès !',
+            ),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 2),
@@ -271,13 +288,18 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
         );
       }
     } catch (e) {
-      debugPrint('❌ Erreur annulation: $e');
-      setState(() => _isLoading = false);
+      debugPrint(
+        '❌ Erreur annulation réservation : $e',
+      );
 
       if (mounted) {
+        setState(() => _isLoading = false);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: ${e.toString()}'),
+            content: Text(
+              'Erreur : ${e.toString()}',
+            ),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
           ),
@@ -285,7 +307,6 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
       }
     }
   }
-
   void _showDeleteReservationModal(Map<String, dynamic> reservation) {
     showConfirmationModal(
       context: context,
@@ -300,27 +321,49 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
     );
   }
 
-  Future<void> _handleDeleteReservation(Map<String, dynamic> reservation) async {
+  Future<void> _handleDeleteReservation(
+      Map<String, dynamic> reservation,
+      ) async {
     setState(() => _isLoading = true);
 
     try {
-      await _databaseService.deleteReservation(
-        reservation['id'].toString(),
+      final reservationId =
+      reservation['id'].toString();
+
+      // =====================================================
+      // SUPPRESSION SÉCURISÉE VIA RPC
+      // =====================================================
+
+      await _databaseService.supprimerReservation(
+        reservationId,
       );
+
+      // =====================================================
+      // RECHARGER LES RÉSERVATIONS
+      // =====================================================
 
       await _loadReservations();
 
       if (mounted) {
-        SnackBarService().showError('Réservation supprimée définitivement !');
+        setState(() => _isLoading = false);
+
+        SnackBarService().showError(
+          'Réservation supprimée définitivement !',
+        );
       }
     } catch (e) {
-      debugPrint('❌ Erreur suppression: $e');
-      setState(() => _isLoading = false);
+      debugPrint(
+        '❌ Erreur suppression réservation : $e',
+      );
 
       if (mounted) {
+        setState(() => _isLoading = false);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erreur: ${e.toString()}'),
+            content: Text(
+              'Erreur : ${e.toString()}',
+            ),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
           ),
@@ -328,7 +371,6 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
       }
     }
   }
-
   Future<void> _showRatingBottomSheet(Map<String, dynamic> reservation) async {
     final appartementId = reservation['appartement']['id'].toString();
     final appartementTitre = reservation['appartement']['titre'] ?? 'Appartement';
@@ -381,12 +423,12 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
                   SizedBox(height: 20.h),
                   Text(
                     existingRating != null ? "Modifier votre note" : "Noter votre séjour",
-                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: const Color(0xFF111827)),
+                    style: GoogleFonts.poppins(fontSize: 20.sp, fontWeight: FontWeight.bold, color: const Color(0xFF111827)),
                   ),
                   SizedBox(height: 6.h),
                   Text(
                     "Partagez votre expérience à l'appartement : $appartementTitre",
-                    style: TextStyle(fontSize: 13.sp, color: Colors.grey[600]),
+                    style: GoogleFonts.poppins(fontSize: 13.sp, color: Colors.grey[600]),
                   ),
                   SizedBox(height: 20.h),
                   Center(
@@ -414,7 +456,7 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
                     maxLines: 3,
                     decoration: InputDecoration(
                       hintText: "Votre commentaire (optionnel)...",
-                      hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
+                      hintStyle: GoogleFonts.poppins(fontSize: 14.sp, color: Colors.grey[400]),
                       filled: true,
                       fillColor: const Color(0xFFF9FAFB),
                       border: OutlineInputBorder(
@@ -491,7 +533,7 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
                       )
                           : Text(
                         existingRating != null ? "Modifier l'avis" : "Soumettre l'avis",
-                        style: TextStyle(color: Colors.white, fontSize: 15.sp, fontWeight: FontWeight.bold),
+                        style: GoogleFonts.poppins(color: Colors.white, fontSize: 15.sp, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -546,7 +588,7 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
               padding: EdgeInsets.only(left: 4.w),
               child: Text(
                 "Mes Séjours",
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontSize: 25.sp,
                   fontWeight: FontWeight.bold,
@@ -572,7 +614,7 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Text(
                           "Retrouvez vos réservations passées et à venir.",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             color: const Color(0xFFFABE94),
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w400,
@@ -619,7 +661,7 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
                               children: [
                                 Text(
                                   t["label"],
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: isActive ? Colors.white : const Color(0xFFE85D26),
                                     fontWeight: FontWeight.w600,
                                     fontSize: 13.sp,
@@ -634,7 +676,7 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
                                   ),
                                   child: Text(
                                     t["count"].toString(),
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                       color: isActive ? Colors.white : const Color(0xFFE85D26),
                                       fontSize: 11.sp,
                                       fontWeight: FontWeight.bold,
@@ -661,7 +703,7 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
                           children: [
                             Icon(Icons.event_busy_rounded, size: 64.sp, color: Colors.grey[300]),
                             SizedBox(height: 16.h),
-                            Text('Aucun séjour dans cette catégorie', style: TextStyle(fontSize: 14.sp, color: Colors.grey[500], fontWeight: FontWeight.w500)),
+                            Text('Aucun séjour dans cette catégorie', style: GoogleFonts.poppins(fontSize: 14.sp, color: Colors.grey[500], fontWeight: FontWeight.w500)),
                           ],
                         ),
                       ),
@@ -720,14 +762,14 @@ class _ListeReservationsPageState extends State<ListeReservationsPage> {
                 SizedBox(width: 6.w),
                 Text(
                   value,
-                  style: TextStyle(color: const Color(0xFF111827), fontSize: 15.sp, fontWeight: FontWeight.w900),
+                  style: GoogleFonts.poppins(color: const Color(0xFF111827), fontSize: 15.sp, fontWeight: FontWeight.w900),
                 ),
               ],
             ),
             SizedBox(height: 2.h),
             Text(
               label,
-              style: TextStyle(color: const Color(0xFF9CA3AF), fontSize: 11.sp, fontWeight: FontWeight.w500),
+              style: GoogleFonts.poppins(color: const Color(0xFF9CA3AF), fontSize: 11.sp, fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -965,7 +1007,7 @@ class _ReservationCardState extends State<ReservationCard> {
                                 SizedBox(height: 4.h),
                                 Text(
                                   'Supprimer',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 11.sp,
                                     fontWeight: FontWeight.w600,
@@ -1136,7 +1178,7 @@ class _ReservationCardState extends State<ReservationCard> {
                                   SizedBox(width: 6.w),
                                   Text(
                                     cfg['label'],
-                                    style: TextStyle(color: cfg['text'], fontSize: 11.sp, fontWeight: FontWeight.bold),
+                                    style: GoogleFonts.poppins(color: cfg['text'], fontSize: 11.sp, fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -1159,7 +1201,7 @@ class _ReservationCardState extends State<ReservationCard> {
                               children: [
                                 Text(
                                   appartement['titre'] ?? 'Appartement',
-                                  style: const TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -1179,7 +1221,7 @@ class _ReservationCardState extends State<ReservationCard> {
                                     Expanded(
                                       child: Text(
                                         "${appartement['quartier'] ?? appartement['ville'] ?? 'Bamako'}",
-                                        style: TextStyle(
+                                        style: GoogleFonts.poppins(
                                           color: Colors.white.withValues(alpha: 0.8),
                                           fontSize: 12.sp,
                                         ),
@@ -1219,7 +1261,7 @@ class _ReservationCardState extends State<ReservationCard> {
                                     SizedBox(width: 8.w),
                                     Text(
                                       _formatDate(widget.reservation['date_debut']?.toString()),
-                                      style: const TextStyle(
+                                      style: GoogleFonts.poppins(
                                         color: Color(0xFF4B5563),
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
@@ -1234,7 +1276,7 @@ class _ReservationCardState extends State<ReservationCard> {
                                       padding: EdgeInsets.symmetric(horizontal: 6.w),
                                       child: Text(
                                         "$nights nuits",
-                                        style: const TextStyle(
+                                        style: GoogleFonts.poppins(
                                           color: Color(0xFF6B7280),
                                           fontSize: 11,
                                           fontWeight: FontWeight.bold,
@@ -1246,7 +1288,7 @@ class _ReservationCardState extends State<ReservationCard> {
                                 ),
                                 Text(
                                   _formatDate(widget.reservation['date_fin']?.toString()),
-                                  style: const TextStyle(
+                                  style: GoogleFonts.poppins(
                                     color: Color(0xFF4B5563),
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -1267,16 +1309,16 @@ class _ReservationCardState extends State<ReservationCard> {
                                       children: [
                                         Text(
                                           formatPrice(totalPrice).split(' ')[0],
-                                          style: const TextStyle(
+                                          style: GoogleFonts.poppins(
                                             color: Color(0xFF111827),
                                             fontSize: 18,
                                             fontWeight: FontWeight.w900,
                                           ),
                                         ),
                                         SizedBox(width: 2.w),
-                                        const Text(
+                                        Text(
                                           "FCFA",
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                             color: Color(0xFFFF6B00),
                                             fontSize: 11,
                                             fontWeight: FontWeight.bold,
@@ -1286,7 +1328,7 @@ class _ReservationCardState extends State<ReservationCard> {
                                     ),
                                     Text(
                                       "${formatPrice(pricePerNight)} / nuit",
-                                      style: const TextStyle(
+                                      style: GoogleFonts.poppins(
                                         color: Color(0xFF9CA3AF),
                                         fontSize: 11,
                                       ),
@@ -1307,7 +1349,7 @@ class _ReservationCardState extends State<ReservationCard> {
                                         ),
                                         child: Text(
                                           "Annuler",
-                                          style: const TextStyle(
+                                          style: GoogleFonts.poppins(
                                             color: Color(0xFFEF4444),
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
@@ -1320,7 +1362,7 @@ class _ReservationCardState extends State<ReservationCard> {
                                         icon: const Icon(Icons.star_rate_rounded, size: 14, color: Color(0xFFF59E0B)),
                                         label: Text(
                                           "Noter",
-                                          style: const TextStyle(
+                                          style: GoogleFonts.poppins(
                                             color: Color(0xFFF59E0B),
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
@@ -1347,9 +1389,9 @@ class _ReservationCardState extends State<ReservationCard> {
                                         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                                         elevation: 0,
                                       ),
-                                      child: const Text(
+                                      child: Text(
                                         "Détails",
-                                        style: TextStyle(
+                                        style: GoogleFonts.poppins(
                                           color: Colors.white,
                                           fontSize: 12,
                                           fontWeight: FontWeight.bold,

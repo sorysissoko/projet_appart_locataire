@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FeatureItemData {
   final IconData icon;
@@ -28,7 +29,7 @@ class FeatureRow extends StatelessWidget {
               children: [
                 Text(
                   item.label,
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.w500,
                       color: const Color(0xFF673A15)
@@ -37,7 +38,7 @@ class FeatureRow extends StatelessWidget {
                 SizedBox(height: 2.h),
                 Text(
                   item.value,
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                     color: isYes ? Colors.green : Colors.red,
@@ -86,9 +87,9 @@ class FeatureCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.poppins(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
                   color: const Color(0xFF0C0C0C),
                 ),
               ),

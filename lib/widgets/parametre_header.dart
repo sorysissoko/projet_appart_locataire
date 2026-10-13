@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ParametreHeader extends StatelessWidget {
   final String title;
@@ -44,8 +45,8 @@ class ParametreHeader extends StatelessWidget {
           padding: const EdgeInsets.only(top: 5, left: 40),
           child: Text(
             title,
-            style: TextStyle(
-              fontSize: 27.sp,
+            style: GoogleFonts.poppins(
+              fontSize: 20.sp,
               fontWeight: FontWeight.bold,
               color: const Color(0xFF8A4E1E),
             ),

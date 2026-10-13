@@ -3,12 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:mobile_app/message/message.dart';
-import 'package:mobile_app/parametres/profile.dart';
-import 'package:mobile_app/favorite_appart/page_favorite.dart';
 import 'package:mobile_app/providers/tab_provider.dart';
 
-import '../appartement/acceuil/views/appartement_page.dart';
+import '../locataire/appartement/acceuil/views/appartement_page.dart';
+import '../locataire/favorite_appart/page_favorite.dart';
+import '../locataire/message/message.dart';
+import '../locataire/parametres/profile.dart';
+
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
